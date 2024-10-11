@@ -1,82 +1,115 @@
-# PlayersApp
+# Sistema de Gerenciamento de Partidas de Futebol
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+## Core do Negócio
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+O sistema foi projetado para gerenciar partidas de futebol, permitindo que jogadores criem, participem e gerenciem partidas. O foco principal é facilitar a organização de jogos entre amigos ou jogadores casuais, controlando a criação de partidas, solicitações de participação e confirmações.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/angular-standalone-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+## Entidades Principais
 
-## Finish your CI setup
+1. **Jogador (Player)**
+   - Representa um usuário do sistema
+   - Atributos: id, nome, email, senha
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/XNCHhf2s5T)
+2. **Partida (Match)**
+   - Representa uma partida de futebol
+   - Atributos: id, data, local, nível do time, vagas disponíveis, status
 
+3. **Partida_Jogadores (MatchPlayers)**
+   - Representa a relação entre partidas e jogadores
+   - Atributos: id_partida, conjunto de id_jogadores, status de cada jogador
 
-## Run tasks
+## Casos de Uso
 
-To run the dev server for your app, use:
+1. **RegisterPlayerUseCase**
+   - Registra um novo jogador no sistema
 
-```sh
-npx nx serve players-app
-```
+2. **LoginPlayerUseCase**
+   - Autentica um jogador no sistema
 
-To create a production bundle:
+3. **CreateMatchUseCase**
+   - Cria uma nova partida
 
-```sh
-npx nx build players-app
-```
+4. **EditMatchUseCase**
+   - Edita os detalhes de uma partida existente
 
-To see all available targets to run for a project, run:
+5. **CancelMatchUseCase**
+   - Cancela uma partida
 
-```sh
-npx nx show project players-app
-```
+6. **ListMatchesUseCase**
+   - Lista as partidas disponíveis
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+7. **ConfirmMatchUseCase**
+   - Confirma a participação de um jogador em uma partida
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+8. **GetPlayerMatchesUseCase**
+   - Lista todas as partidas em que um jogador está vinculado
 
-## Add new projects
+9. **RequestToPlayMatchUseCase**
+   - Solicita participação em uma partida
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
+10. **RejectPlayRequestUseCase**
+    - Recusa a solicitação de um jogador para participar de uma partida
 
-Use the plugin's generator to create new projects.
+11. **ListPendingRequestsUseCase**
+    - Lista as solicitações pendentes para uma partida
 
-To generate a new application, use:
+12. **GetMatchPlayersUseCase**
+    - Obtém todos os jogadores confirmados em uma partida
 
-```sh
-npx nx g @nx/angular:app demo
-```
+## Requisitos Funcionais
 
-To generate a new library, use:
+1. Jogadores podem se registrar e fazer login no sistema
+2. Jogadores podem criar novas partidas
+3. Jogadores podem editar e cancelar partidas que criaram
+4. Jogadores podem visualizar uma lista de partidas disponíveis
+5. Jogadores podem solicitar participação em partidas
+6. Criadores de partidas podem confirmar ou recusar solicitações de participação
+7. Jogadores podem visualizar as partidas em que estão participando
+8. O sistema deve controlar o número de vagas disponíveis em cada partida
+9. O sistema deve atualizar o status da partida automaticamente quando todas as vagas forem preenchidas
 
-```sh
-npx nx g @nx/angular:lib mylib
-```
+## Requisitos Não Funcionais
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+1. O sistema deve ser desenvolvido utilizando NestJS e TypeScript
+2. Deve seguir os princípios de Clean Architecture e Domain-Driven Design
+3. Deve utilizar PostgreSQL como banco de dados
+4. Deve implementar autenticação JWT para proteger as rotas
+5. Deve ter uma cobertura de testes adequada
+6. Deve ter documentação da API usando Swagger
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Tecnologias Utilizadas
 
+- **Backend**: NestJS, TypeScript
+- **Banco de Dados**: PostgreSQL
+- **Autenticação**: JSON Web Tokens (JWT)
+- **Documentação da API**: Swagger (via @nestjs/swagger)
+- **Testes**: Jest
+- **Qualidade de código**: Sonarqube 
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Fluxo Principal
 
-## Install Nx Console
+1. Um jogador se registra no sistema
+2. O jogador faz login e recebe um token JWT
+3. O jogador cria uma nova partida
+4. Outros jogadores visualizam a lista de partidas disponíveis
+5. Um jogador solicita participação em uma partida
+6. O criador da partida vê as solicitações pendentes
+7. O criador confirma ou recusa a solicitação
+8. Quando todas as vagas são preenchidas, o status da partida é atualizado para 'EM_EXECUCAO'
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+## Considerações de Segurança
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- Todas as senhas são hasheadas antes de serem armazenadas no banco de dados
+- As rotas sensíveis são protegidas por autenticação JWT
+- Validações apropriadas são realizadas em todas as entradas do usuário
 
-## Useful links
+## Escalabilidade e Desempenho
 
-Learn more:
+- Índices apropriados são criados no banco de dados para otimizar consultas frequentes
+- A arquitetura em camadas permite fácil manutenção e extensão do sistema
+- O uso de TypeORM permite fácil migração para outros bancos de dados, se necessário
 
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/angular-standalone-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Próximos Passos
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+4. Desenvolver uma interface de usuário (frontend) para consumir esta API
+5. Configurar um pipeline de CI/CD para automatizar testes e deploy
